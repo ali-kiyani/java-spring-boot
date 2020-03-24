@@ -25,17 +25,17 @@ public class StringPractice
 	public void StringBufferVSStringBuilder()
 	{
 		 long startTime = System.currentTimeMillis();  
-	        StringBuffer stringBuffer = new StringBuffer("Java");  
+	        StringBuffer stringBuffer = new StringBuffer("muhammad");  
 	        for (int i=0; i<100000; i++){  
-	        	stringBuffer.append("Tpoint");  
+	        	stringBuffer.append("ali");  
 	        }  
-	        System.out.println("Time taken by StringBuffer: " + (System.currentTimeMillis() - startTime) + "ms");  
+	        System.out.println("Time taken by StringBuffer: " + (System.currentTimeMillis() - startTime) + "ms");  // output => 4ms
 	        startTime = System.currentTimeMillis();  
-	        StringBuilder stringBuilder = new StringBuilder("Java");  
+	        StringBuilder stringBuilder = new StringBuilder("muhammad");  
 	        for (int i=0; i<100000; i++){  
-	        	stringBuilder.append("Tpoint");  
+	        	stringBuilder.append("ali");  
 	        }  
-	        System.out.println("Time taken by StringBuilder: " + (System.currentTimeMillis() - startTime) + "ms");  
+	        System.out.println("Time taken by StringBuilder: " + (System.currentTimeMillis() - startTime) + "ms");  // output => 1ms
 	}
 	
 	public static void main(String args[])
