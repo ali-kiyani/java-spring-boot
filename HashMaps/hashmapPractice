@@ -1,0 +1,115 @@
+package Hashmap;
+
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
+
+
+public class hashmapPractice {
+	
+	HashMap<Integer, String> HashMapExample() 
+	{
+		/*
+		 * Stores Key, Value pair
+		 * HashMap is a non-synchronized, means it shows inconsistency when accessed by multiple threads at a same time.
+		 * Key is a unique hash through which every bucket is identified
+		 * more than one Key, Value pairs can be associated with a single bucket in a linked-list data structure
+		 * after a certain threshold is achieved on any bucket, linked-list of Key Value pairs are transformed in to balanced tree wo increase efficiency
+		 */
+		
+		HashMap<Integer, String> h = new HashMap<Integer, String>();
+
+		h.put(1, "A");
+		h.put(2, "B");
+		h.put(3, "C");
+	    System.out.println(h);							// prints whole hashmap
+	    System.out.println(h.get(1));					// prints value with key=1
+	    
+	    return h;
+	}
+	
+	Hashtable<Integer, String> hashTableExample()
+	{
+		/*
+		 * HashTable is similar to HashMap but synchronized, means it will only allow a single thread to get/put to maintain consistency.
+		 */
+		Hashtable<Integer, String> h = new Hashtable<Integer, String>(); 	// initializing HashTable
+		h.put(1, "A");
+		h.put(2, "B");
+		h.put(3, "C");
+		
+		return h;
+	}
+	
+	ConcurrentHashMap<Integer, String> ConcurrentHashMapExample()
+	{
+		/*
+		 * It uses HashTable in-beneath.
+		 * ConcurrentHashMap is a thread-safe, means multiple threads can access object without any complications.
+		 * this concurrency is due to division in to segments level, default level is 16
+		 * Any number of threads can perform retrieval but for updation, only a certain segment is locked in which thread is to update.
+		 */
+		
+		ConcurrentHashMap<Integer, String> h = new ConcurrentHashMap<Integer, String>(); 
+		h.put(1, "A");
+		h.put(2, "B");
+		h.put(3, "C");
+        
+		return h;
+	}
+	
+	static void ThreadExec(HashMap<Integer, String> hashMap, Hashtable<Integer, String> hashTable, ConcurrentHashMap<Integer, String> concurrentHashMap, int threadNumber)
+	{
+		for(int i = 0; i < 10000; i++) 
+		{
+			hashMap.put(i+4, i + 4 + "");					// putting data in HashMap through Thread 1
+			System.out.println("Thread#: " + threadNumber + " " + hashMap.get(i+4));
+		}
+		
+		for (int i = 0; i < 10000; i++)
+		{
+			hashTable.put(i+4, i+4+"");						// putting data in HashTable through Thread 1
+			System.out.println("Thread#: " + threadNumber + " " + hashTable.get(i+4));
+		}
+		for(int i = 0; i < 10000; i++)
+		{
+			concurrentHashMap.put(i+4, i+4+"");				// putting data in ConcurrentHashMap through Thread 1
+			System.out.println("Thread#: " + threadNumber + " " + concurrentHashMap.get(i+4));
+		}
+	}
+	
+	void initThread(HashMap<Integer, String> hashMap, Hashtable<Integer, String> hashTable, ConcurrentHashMap<Integer, String> concurrentHashMap)
+	{
+		Thread thread1 = new Thread(new Runnable() {				// Thread 1
+			
+			@Override
+			public void run() {
+				hashmapPractice.ThreadExec(hashMap, hashTable, concurrentHashMap, 1);
+			}
+		});
+		
+		Thread thread2 = new Thread(new Runnable() {				// Thread 2
+			
+			@Override
+			public void run() {
+				hashmapPractice.ThreadExec(hashMap, hashTable, concurrentHashMap, 2);
+			}
+		});
+		
+		thread1.start();										// Thread 1 start
+		thread2.start();										// Thread 2 start
+	}
+	
+	public static void main(String[] args)
+	{
+		hashmapPractice h1 = new hashmapPractice();
+		HashMap<Integer, String> hashMap = h1.HashMapExample();							// HashMap
+		
+		Hashtable<Integer, String> hashTable = h1.hashTableExample();					// HashTable
+		
+		ConcurrentHashMap<Integer, String> concurrentHashMap = h1.ConcurrentHashMapExample();	// ConcurrenthashMap
+		
+		h1.initThread(hashMap, hashTable, concurrentHashMap);
+	}
+
+}
